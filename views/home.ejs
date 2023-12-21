@@ -15,9 +15,9 @@
     </form>
     <br />
     <br />
-    <% if (outputPath) { %>
+    <% if (fileName) { %>
     <button>
-      <a href="<%= outputPath%>" download="download-file.txt">Download</a>
+      <a href="/download?fileName=<%= fileName%>" download>Download</a>
     </button>
     <% } %>
   </body>

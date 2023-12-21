@@ -8,7 +8,7 @@ const app = express();
 app.set('view engine', 'ejs')
 
 app.get('/', (req, res) => {
-    res.render('home', {outputPath : ""})
+    res.render('home', {fileName : ""})
 })
 
 //multer code for storage of file
@@ -39,12 +39,42 @@ app.post('/upload', upload.single('textFile'), (req, res) => {
     exec(command, (error, stdout, stderr) => {
         
     })
-    res.render('home', {outputPath : filePath})
+    res.render('home', {fileName : originalFileName})
 })
 
-// app.get('/download/file', (req, res) => {
+app.get('/download', (req, res) => {
+    const originalFileName = req.query.fileName
+    const tempFileName = originalFileName.split('.')
+    const outputFileName = tempFileName[0] + "-compressed.bin"
+    const outputFilePath = `./public/my-uploads/${outputFileName}`
+    const inputFilePath = `./public/my-uploads/${originalFileName}`
 
-// })
+    res.download(outputFilePath, (err) => {
+        if(err) {
+
+        } else {
+            console.log("downloaded successfully")
+            fs.unlink(inputFilePath, (unlinkErr) => {
+                if(unlinkErr) {
+
+                } else {
+                    console.log('file deleted successfully')
+                }
+            })
+
+            fs.unlink(outputFilePath, (unlinkErr) => {
+                if(unlinkErr) throw unlinkErr;
+                else console.log('deleted successfully')
+            })
+        }
+    })
+})
+
+app.get('*', (req, res) => {
+    res.redirect('/');
+});
+
+
 app.listen(8080, () => {
     console.log(`app is listening on http://localhost:${8080}`)
 })
