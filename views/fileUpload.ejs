@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <h1>Welcome to File <%= type %></h1>
+    <form
+      action="/<%= type %>/upload"
+      method="post"
+      enctype="multipart/form-data"
+    >
+      <input required accept=".txt" type="file" name="textFile" id="file" />
+      <br />
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+    <br />
+    <br />
+  </body>
+</html>
