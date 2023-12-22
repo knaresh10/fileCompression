@@ -9,9 +9,13 @@ const downloadFileRouter = require('./downloadFile')
 
 const router = Router()
 
-router.use('/download', downloadFileRouter)
+router.use('/downloadFile', downloadFileRouter)
 router.get('/', (req, res) => {
     res.render('fileUpload', {type : "compression"})
+})
+
+router.get('/download', (req, res) => {
+    res.render('downloadFile.ejs', {type : 'compression'})
 })
 
 router.post('/upload', upload.single('textFile'), (req, res) => {
@@ -21,6 +25,9 @@ router.post('/upload', upload.single('textFile'), (req, res) => {
     let outputFileName = tempFileName[0] + "-compressed.bin"
     let outputFilePath =  `./public/my-uploads/${outputFileName}`
     let inputFilePath =  `./public/my-uploads/${originalFileName}`
+    
+    req.session.inputFilePath = inputFilePath
+    req.session.outputFilePath = outputFilePath
 
     fs.closeSync(fs.openSync(outputFilePath, 'w'))
 
@@ -28,7 +35,7 @@ router.post('/upload', upload.single('textFile'), (req, res) => {
     exec(command, (error, stdout, stderr) => {
         
     })
-    res.render('download', {fileName : originalFileName})
+    res.redirect('/compression/download')
 })
 
 

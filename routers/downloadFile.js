@@ -5,12 +5,9 @@ const fs = require('fs')
 const router = Router()
 
 router.get('/', (req, res) => {
-    const originalFileName = req.query.fileName
-    const tempFileName = originalFileName.split('.')
-    const outputFileName = tempFileName[0] + "-compressed.bin"
-    let outputFilePath =  `./public/my-uploads/${outputFileName}`
-    let inputFilePath =  `./public/my-uploads/${originalFileName}`
-
+    const outputFilePath = req.session.outputFilePath
+    const inputFilePath = req.session.inputFilePath
+    
     res.download(outputFilePath, (err) => {
         if(err) {
 
